@@ -11,7 +11,8 @@ struct ContentView: View {
     @State private var email = ""
     @State private var password = ""
     @State private var isLoggedIn = false
-    
+    @State private var errorMessage: String? = nil
+      
     var body: some View {
         VStack(spacing: 20) {
             if isLoggedIn {
@@ -27,10 +28,15 @@ struct ContentView: View {
                     .textFieldStyle(RoundedBorderTextFieldStyle())
                     .accessibilityIdentifier("passwordField")
                 
+                if let error = errorMessage {
+                    Text(error)
+                        .foregroundColor(.red)
+                        .font(.subheadline)
+                        .accessibilityIdentifier("generalErrorText")
+                }
+                
                 Button("Войти") {
-                    if email == "test@test.com" && password == "123456" {
-                        isLoggedIn = true
-                    }
+                    validateAndLogin()
                 }
                 .accessibilityIdentifier("loginButton")
                 
@@ -41,7 +47,29 @@ struct ContentView: View {
         }
         .padding()
     }
+    
+    private func validateAndLogin() {
+        errorMessage = nil
+        
+        if !email.isEmpty && password.isEmpty {
+            errorMessage = "Пожалуйста, введите пароль."
+            return
+        }
+        
+        if email.isEmpty {
+            errorMessage = "Пожалуйста, введите email."
+            return
+        }
+        
+        if email == "test@test.com" && password == "123456" {
+            isLoggedIn = true
+        } else {
+            errorMessage = "Неверный email или пароль."
+        }
+    }
 }
+
+
 
 #Preview {
     ContentView()
