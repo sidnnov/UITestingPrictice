@@ -81,6 +81,7 @@ final class UITestingPracticeUITests: XCTestCase {
         //Нажатие кнопки войти
         loginButton.tap()
         
+        //Проверка на пустой пароль
         let generalErrorText = app.staticTexts["generalErrorText"]
         XCTAssertEqual(generalErrorText.label, "Пожалуйста, введите пароль.")
         
